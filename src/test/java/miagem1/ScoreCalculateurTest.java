@@ -18,16 +18,14 @@ public class ScoreCalculateurTest {
     public void setUp() throws Exception {
         // given : une instance de ScoreCalculateur et Question à choix multiple
         score = new ScoreCalculateur();
-        questionAChoixMultiple = new QuestionAChoixMultiple("q1",new ArrayList<Integer>(Arrays.asList(2,3,5)));
+        questionAChoixMultiple = new QuestionAChoixMultiple("q1",new ArrayList<Integer>(Arrays.asList(2,3,5)), 5);
     }
 
     @Test
     public void testCalculeScoreMauvaisesReponses() {
         // when : quand l'étudiant fourni l'indice des mauvaises réponses
 
-        List<Integer> listeReponsesEtudiant = new ArrayList<Integer>();
-        listeReponsesEtudiant.add(1);
-        listeReponsesEtudiant.add(4);
+        List<Integer> listeReponsesEtudiant = new ArrayList<Integer>(Arrays.asList(1, 4));
         float resScore = 0;
         resScore = score.calculeScore(listeReponsesEtudiant, questionAChoixMultiple);
         // then : le score obtenu est 0
@@ -38,9 +36,7 @@ public class ScoreCalculateurTest {
     public void testCalculeScoreDeuxBonnesReponses() {
         // when : quand l'étudiant fourni l'indice de  2 bonnes réponses
 
-        List<Integer> listeReponsesEtudiant = new ArrayList<Integer>();
-        listeReponsesEtudiant.add(2);
-        listeReponsesEtudiant.add(3);
+        List<Integer> listeReponsesEtudiant = new ArrayList<Integer>(Arrays.asList(2, 3));
         float resScore = 0;
         resScore = score.calculeScore(listeReponsesEtudiant, questionAChoixMultiple);
         // then : le score obtenu est 2*100/3f
@@ -51,13 +47,32 @@ public class ScoreCalculateurTest {
     public void testCalculeScoreBonnesReponses() {
         // when : quand l'étudiant fourni l'indice de  toutes les bonnes réponses
 
-        List<Integer> listeReponsesEtudiant = new ArrayList<Integer>();
-        listeReponsesEtudiant.add(2);
-        listeReponsesEtudiant.add(3);
-        listeReponsesEtudiant.add(5);
+        List<Integer> listeReponsesEtudiant = new ArrayList<Integer>(Arrays.asList(2, 3, 5));
         float resScore = 0;
         resScore = score.calculeScore(listeReponsesEtudiant, questionAChoixMultiple);
         // then : le score obtenu est 100
         assertEquals(100f, resScore, 0.01f);
+    }
+
+    @Test
+    public void testCalculeScoreToutesReponsesPossibles() {
+        // when : quand l'étudiant fourni l'indice de  toutes les réponses possibles
+
+        List<Integer> listeReponsesEtudiant = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5));
+        float resScore = 0;
+        resScore = score.calculeScore(listeReponsesEtudiant, questionAChoixMultiple);
+        // then : le score obtenu est 0
+        assertEquals(0f, resScore, 0.01f);
+    }
+
+    @Test
+    public void testCalculeScoreDeuxBonnesRepUneFausse() {
+        // when : quand l'étudiant fourni l'indice de 2 bonnes réponses et d'une fausse
+
+        List<Integer> listeReponsesEtudiant = new ArrayList<Integer>(Arrays.asList(1, 2, 3));
+        float resScore = 0;
+        resScore = score.calculeScore(listeReponsesEtudiant, questionAChoixMultiple);
+        // then : le score obtenu est 16,66
+        assertEquals(16.66f, resScore, 0.01f);
     }
 }

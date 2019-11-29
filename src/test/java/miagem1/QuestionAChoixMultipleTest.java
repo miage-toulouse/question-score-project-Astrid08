@@ -19,7 +19,7 @@ public class QuestionAChoixMultipleTest {
         List<Integer> listeReponses = new ArrayList<Integer>();
         listeReponses.add(1);
         listeReponses.add(2);
-        question = new QuestionAChoixMultiple("un énoncé", listeReponses);
+        question = new QuestionAChoixMultiple("un énoncé", listeReponses, 5);
 
     }
 
@@ -60,8 +60,8 @@ public class QuestionAChoixMultipleTest {
         for (int indiceEtudiant : listeReponsesEtudiant) {
             resScore = resScore + question.getScoreForIndice(indiceEtudiant);
         }
-        // then : le score obtenu est 50
-        assertEquals(50f, resScore, 0.01f);
+        // then : le score obtenu est 16.66
+        assertEquals(16.66f, resScore, 0.01f);
 
     }
 }
